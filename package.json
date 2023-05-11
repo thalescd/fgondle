@@ -1,0 +1,26 @@
+{
+  "name": "fgondle",
+  "version": "1.0.0",
+  "description": "wordle but fgo",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thalescd/fgondle.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thalescd/fgondle/issues"
+  },
+  "homepage": "https://github.com/thalescd/fgondle#readme",
+  "dependencies": {
+    "next": "^13.4.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-select": "^5.7.3"
+  }
+}
