@@ -1,6 +1,10 @@
 import Select from 'react-select'
 import React, { useEffect, useState } from 'react';
-import styles from './index.module.css'
+import ResetButton from '../components/reset_button';
+import SelectionOption from '../components/selection_option';
+import SelectedTable from '../components/selected_table';
+import TurnCounter from '../components/turn_counter';
+import styles from '../styles/index.module.css';
 
 export async function getStaticProps() {
   const apiUrl = "https://api.atlasacademy.io/export/JP/nice_servant_lang_en.json";
@@ -88,7 +92,7 @@ function Home({ servants }) {
     PLAYING: 3,
   };
 
-  const limitTurns = 7;
+  const TURN_LIMIT = 7;
   const [selected, setSelected] = useState([]);
   const [target, setTarget] = useState([]);
   const [gameState, setGameState] = useState([]);
@@ -106,92 +110,56 @@ function Home({ servants }) {
     setTurn(1);
   };
 
-  const customOption = (servant) => (
-    <div className={`${styles.selection}`}>
-      <img className={`${styles.servantIcon} ${styles.servantIconSelection}`} src={servant.icon} alt="Icon" />
-      <span>{servant.name}</span>
-    </div>
-  );
-
-  const addSelected = (newSelection) => {
+  const handleSelection = (newSelection) => {
     if (!selected.includes(newSelection)) {
       setSelected([...selected, newSelection]);
-    }
-  };
-
-  const handleSelection = (newSelection) => {
-    addSelected(newSelection);
-    if (newSelection.id == target.id) {
-      setGameState(GAMESTATE.WIN);
-    } else {
-      if (turn == limitTurns) {
-        setGameState(GAMESTATE.LOSE);
+      if (newSelection.id == target.id) {
+        setGameState(GAMESTATE.WIN);
       } else {
-        setTurn(turn + 1);
+        if (turn == TURN_LIMIT) {
+          setGameState(GAMESTATE.LOSE);
+        } else {
+          setTurn(turn + 1);
+        }
       }
     }
   };
 
-  const checkGuess = (key, value) => {
-    if (target[key] == value) {
-      return true;
-    }
-    return false;
-  };
-
-  const resetButton = () => (
-    <button onClick={startGame}>Play again</button>
+  const formatOptionLabel = ({ name, icon }) => (
+    <SelectionOption option={{ name, icon }} />
   );
 
   return (
     <div className={`${styles.container} ${styles.text}`}>
-      <span>Turn {turn}/{limitTurns}</span>;
+      <h1 className={styles.title}>FGOndle</h1>
       {(() => {
         switch (gameState) {
           case GAMESTATE.WIN:
-            return <span>You win {resetButton()}</span>;
+            return <span>
+              You win
+              <ResetButton onClick={startGame} />
+            </span>;
           case GAMESTATE.LOSE:
-            return <span>You lose, the right answer was {customOption(target)} {resetButton()}</span>;
+            return <span>
+              You lose, the right answer is <SelectionOption option={target} />
+              <ResetButton onClick={startGame} />
+            </span>;
           case GAMESTATE.PLAYING:
             return <Select
               placeholder={"Select a servant..."}
               options={servants}
               getOptionLabel={(option) => option.name}
               getOptionValue={(option) => option.id}
-              formatOptionLabel={customOption}
+              formatOptionLabel={formatOptionLabel}
               onChange={handleSelection}
             />;
         }
       })()}
-      <table>
-        <thead>
-          <tr>
-            <th className={`${styles.cell} ${styles.headerCell}`}>Icon</th>
-            <th className={`${styles.cell} ${styles.headerCell}`}>Name</th>
-            <th className={`${styles.cell} ${styles.headerCell}`}>Class</th>
-            <th className={`${styles.cell} ${styles.headerCell}`}>NP Type</th>
-            <th className={`${styles.cell} ${styles.headerCell}`}>NP Target</th>
-            <th className={`${styles.cell} ${styles.headerCell}`}>Rarity</th>
-            <th className={`${styles.cell} ${styles.headerCell}`}>Gender</th>
-          </tr>
-        </thead>
-        <tbody>
-          {[...selected].reverse().map((servant) => (
-            <tr key={servant.id}>
-              <td className={`${styles.cell} ${styles.iconCell}`}>
-                <img className={`${styles.servantIcon} ${styles.servantIconCell}`} src={servant.icon} alt={servant.name} />
-              </td>
-              {Object.keys(servant).map((key) => {
-                if (key === 'id' || key === 'icon') {
-                  return null;
-                }
-                const isRight = checkGuess(key, servant[key]);
-                return <td className={`${isRight ? styles.right : styles.wrong} ${styles.cell}`} key={key}>{servant[key]}</td>;
-              })}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <TurnCounter turn={turn} limitTurns={TURN_LIMIT} />
+      <SelectedTable
+        selectedList={[...selected].reverse()}
+        target={target}
+      />
     </div>
   );
 };

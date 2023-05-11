@@ -2,7 +2,6 @@
   display: table;
   margin: 0 auto;
   width: 80%;
-  
 }
 
 .container table {
@@ -47,10 +46,30 @@
   display: block;
 }
 
-.servantIconSelection{
-  margin-right: 10px; 
+.servantIconSelection {
+  margin-right: 10px;
 }
 
 .iconCell {
   width: 1%;
+}
+
+.btn{
+  display: block;
+  width: 150px;
+  padding: 8px 0;
+  margin: 20px auto;
+  background: #4979ff;
+  border-radius: 4px;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+}
+
+.title{
+  text-align: center;
+}
+
+.turns{
+  text-align: center;
 }
