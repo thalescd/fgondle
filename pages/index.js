@@ -1,13 +1,15 @@
 import Select from 'react-select'
 import React, { useEffect, useState } from 'react';
-import ResetButton from '../components/reset_button';
-import SelectionOption from '../components/selection_option';
-import SelectedTable from '../components/selected_table';
-import TurnCounter from '../components/turn_counter';
+import ResetButton from '../components/ResetButton';
+import SelectionOption from '../components/SelectionOption';
+import SelectedTable from '../components/SelectedTable';
+import TurnCounter from '../components/TurnCounter';
 import styles from '../styles/index.module.css';
+import RegionSelection from '../components/RegionSelection';
 
 export async function getStaticProps() {
-  const apiUrl = "https://api.atlasacademy.io/export/JP/nice_servant_lang_en.json";
+  const apiJPUrl = "https://api.atlasacademy.io/export/JP/nice_servant_lang_en.json";
+  const apiNAUrl = "https://api.atlasacademy.io/export/NA/nice_servant.json";
 
   const toNormalCase = (str) => {
     return str.replace(/([a-z])([A-Z])/g, '$1 $2')
@@ -73,18 +75,27 @@ export async function getStaticProps() {
     return newData;
   };
 
-  console.log("Getting servant data...");
-  const atlasResponse = await fetch(apiUrl).then(res => res.json());
-  console.log("Servants data acquired!");
-  const servants = filterServantInfo(atlasResponse);
-  console.log("Servants data filtered!");
+  const getData = async (url, region) => {
+    console.log(`Getting servant data from ${region}...`);
+    const atlasResponse = await fetch(url).then(res => res.json());
+    const servants = filterServantInfo(atlasResponse);
+    console.log(`Returning servant data from ${region}...`);
+    return servants;
+  }
+
+  const servantsJp = await getData(apiJPUrl, "JP");
+  const servantsNa = await getData(apiNAUrl, "NA");
+
   return {
-    props: { servants },
+    props: {
+      servantsJp,
+      servantsNa
+    },
     revalidate: 86400
   }
 }
 
-function Home({ servants }) {
+function Home({ servantsJp, servantsNa }) {
 
   const GAMESTATE = {
     WIN: 1,
@@ -93,10 +104,13 @@ function Home({ servants }) {
   };
 
   const TURN_LIMIT = 7;
-  const [selected, setSelected] = useState([]);
+  const [servants, setServants] = useState(servantsJp);
+  const [selectedServant, setSelectedServant] = useState(null);
+  const [selectedList, setSelectedList] = useState([]);
   const [target, setTarget] = useState([]);
   const [gameState, setGameState] = useState([]);
   const [turn, setTurn] = useState([]);
+  const [region, setRegion] = useState("JP");
 
   useEffect(() => {
     startGame();
@@ -106,13 +120,15 @@ function Home({ servants }) {
     const index = Math.floor(Math.random() * servants.length);
     setTarget(servants[index]);
     setGameState(GAMESTATE.PLAYING);
-    setSelected([]);
+    setSelectedServant(null);
+    setSelectedList([]);
     setTurn(1);
   };
 
-  const handleSelection = (newSelection) => {
-    if (!selected.includes(newSelection)) {
-      setSelected([...selected, newSelection]);
+  const handleServantSelection = (newSelection) => {
+    setSelectedServant(newSelection);
+    if (!selectedList.includes(newSelection)) {
+      setSelectedList([...selectedList, newSelection]);
       if (newSelection.id == target.id) {
         setGameState(GAMESTATE.WIN);
       } else {
@@ -125,6 +141,12 @@ function Home({ servants }) {
     }
   };
 
+  function handleRegionSelection(event) {
+    setRegion(event.target.value);
+    setServants(event.target.value === "JP" ? servantsJp : servantsNa);
+    startGame();
+  }
+
   const formatOptionLabel = ({ name, icon }) => (
     <SelectionOption option={{ name, icon }} />
   );
@@ -132,6 +154,10 @@ function Home({ servants }) {
   return (
     <div className={`${styles.container} ${styles.text}`}>
       <h1 className={styles.title}>FGOndle</h1>
+      <RegionSelection
+        selectedValue={region}
+        onChange={handleRegionSelection}
+      />
       {(() => {
         switch (gameState) {
           case GAMESTATE.WIN:
@@ -151,13 +177,14 @@ function Home({ servants }) {
               getOptionLabel={(option) => option.name}
               getOptionValue={(option) => option.id}
               formatOptionLabel={formatOptionLabel}
-              onChange={handleSelection}
+              onChange={handleServantSelection}
+              value={selectedServant}
             />;
         }
       })()}
       <TurnCounter turn={turn} limitTurns={TURN_LIMIT} />
       <SelectedTable
-        selectedList={[...selected].reverse()}
+        selectedList={[...selectedList].reverse()}
         target={target}
       />
     </div>

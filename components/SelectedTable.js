@@ -1,4 +1,4 @@
-import TableHeader from './table_header';
+import TableHeader from './TableHeader';
 import styles from '../styles/index.module.css';
 
 function SelectedTable({ selectedList, target }) {

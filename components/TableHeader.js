@@ -1,5 +1,5 @@
 import React from 'react';
-import HeaderCell from './header_cell';
+import HeaderCell from './HeaderCell';
 
 function TableHeader() {
   return (
