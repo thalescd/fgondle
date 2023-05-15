@@ -1,7 +1,11 @@
 import React from 'react';
 import styles from '../styles/index.module.css';
 
-const HeaderCell = ({ label }) => {
+interface HeaderCellProps {
+    label: string;
+}
+
+const HeaderCell = ({ label }: HeaderCellProps) => {
     return (
         <th className={`${styles.cell} ${styles.headerCell}`}>{label}</th>
     );
