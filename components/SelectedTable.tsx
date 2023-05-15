@@ -1,7 +1,7 @@
 import React from 'react';
 import TableHeader from './TableHeader';
 import SelectedRow from './SelectedRow';
-import { Servant } from '../utils/interfaces/servants.interface';
+import { Servant } from '../utils/constants';
 
 interface SelectedTableProps {
     selectedList: Servant[];

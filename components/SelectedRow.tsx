@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from '../styles/index.module.css';
-import { Servant } from '../utils/interfaces/servants.interface';
+import { Servant } from '../utils/constants';
 
 interface SelectedTableProps {
     servant: Servant;
