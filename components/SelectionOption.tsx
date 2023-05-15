@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from '../styles/index.module.css';
-import { Option } from '../utils/interfaces/options.interface';
+import { Option } from '../utils/constants';
 
 interface SelectionOptionProps {
   option: Option;
