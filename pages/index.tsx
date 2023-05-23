@@ -1,5 +1,5 @@
 import ServantSelection from '../components/ServantSelection';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ResetButton from '../components/ResetButton';
 import SelectionOption from '../components/SelectionOption';
 import SelectedTable from '../components/SelectedTable';
@@ -44,18 +44,18 @@ function Home({ servantsJp, servantsNa }) {
   const [turn, setTurn] = useState<number>(1);
   const [region, setRegion] = useState<string>(Region.JP);
 
-  useEffect(() => {
-    startGame();
-  }, []);
-
-  const startGame = () => {
+  const startGame = useCallback(() => {
     const index: number = Math.floor(Math.random() * servants.length);
     setTarget(servants[index]);
     setGameState(GameState.Playing);
     setSelectedServant(null);
     setSelectedList([]);
     setTurn(1);
-  };
+  }, [servants]);
+
+  useEffect(() => {
+    startGame();
+  }, [startGame]);
 
   const handleServantSelection = (newSelection: Servant): void => {
     setSelectedServant(newSelection);

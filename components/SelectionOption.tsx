@@ -1,6 +1,8 @@
 import React from 'react';
 import styles from '../styles/index.module.css';
 import { Option } from '../utils/constants';
+import Image from 'next/image';
+import ServantImage from './ServantImage';
 
 interface SelectionOptionProps {
   option: Option;
@@ -9,10 +11,9 @@ interface SelectionOptionProps {
 const SelectionOption = ({ option }: SelectionOptionProps) => {
   return (
     <div className={`${styles.selection}`}>
-      <img
-        className={`${styles.servantIcon} ${styles.servantIconSelection}`}
-        src={option.icon}
-        alt="Icon"
+      <ServantImage
+        imageUrl={option.icon}
+        alt={option.name}
       />
       <span>{option.name}</span>
     </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '../styles/index.module.css';
 import { Servant } from '../utils/constants';
+import ServantImage from './ServantImage';
 
 interface SelectedTableProps {
     servant: Servant;
@@ -10,9 +11,8 @@ interface SelectedTableProps {
 const SelectedRow = ({ servant, checkGuess }) => {
     return <tr key={servant.id}>
         <td className={`${styles.cell} ${styles.iconCell}`}>
-            <img
-                className={`${styles.servantIcon} ${styles.servantIconCell}`}
-                src={servant.icon}
+            <ServantImage
+                imageUrl={servant.icon}
                 alt={servant.name}
             />
         </td>

@@ -21,7 +21,7 @@ function SelectedTable({ selectedList, target }: SelectedTableProps) {
             <TableHeader />
             <tbody>
                 {selectedList.map((servant) => (
-                    <SelectedRow servant={servant} checkGuess={checkGuess} />
+                    <SelectedRow key={servant.id} servant={servant} checkGuess={checkGuess} />
                 ))}
             </tbody>
         </table>
