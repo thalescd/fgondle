@@ -1,13 +1,13 @@
 import ServantSelection from '../components/ServantSelection';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ResetButton from '../components/ResetButton';
 import SelectionOption from '../components/SelectionOption';
-import SelectedTable from '../components/SelectedTable';
+import Table from '../components/Table/Table';
 import TurnCounter from '../components/TurnCounter';
-import styles from '../styles/index.module.css';
 import RegionSelection from '../components/RegionSelection';
 import { filterServantInfo } from '../utils/utils'
 import { Servant, GameState, Region } from '../utils/constants'
+import PageTitle from '../components/PageTitle';
 
 export async function getStaticProps() {
   const apiJPUrl: string = "https://api.atlasacademy.io/export/JP/nice_servant_lang_en.json";
@@ -80,8 +80,8 @@ function Home({ servantsJp, servantsNa }) {
   }
 
   return (
-    <div className={`${styles.container} ${styles.text}`}>
-      <h1 className={styles.title}>FGOndle</h1>
+    <div className="md:container md:mx-auto font-nunito">
+      <PageTitle />
       <RegionSelection
         selectedValue={region}
         onChange={handleRegionSelection}
@@ -107,7 +107,7 @@ function Home({ servantsJp, servantsNa }) {
         }
       })()}
       <TurnCounter turn={turn} limitTurns={TURN_LIMIT} />
-      <SelectedTable
+      <Table
         selectedList={[...selectedList].reverse()}
         target={target}
       />

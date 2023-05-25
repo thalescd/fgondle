@@ -1,5 +1,4 @@
-import React, { MouseEventHandler } from 'react';
-import styles from '../styles/index.module.css';
+import { MouseEventHandler } from 'react';
 
 interface ResetButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>;
@@ -7,10 +6,12 @@ interface ResetButtonProps {
 
 const ResetButton = ({ onClick }: ResetButtonProps) => {
   return (
-    <button
-      className={styles.btn}
-      onClick={onClick}
-    >Play again</button>
+    <div className='text-center'>
+      <button
+        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+        onClick={onClick}
+      >Play again</button>
+    </div>
   );
 };
 

@@ -1,5 +1,3 @@
-import React from 'react';
-//import styles from '../styles/index.module.css';
 import Image from 'next/image';
 
 interface ServantImageProps {
@@ -9,9 +7,7 @@ interface ServantImageProps {
 
 const ServantImage = ({ imageUrl, alt }: ServantImageProps) => {
     return (
-
         <Image
-            //className={`${styles.servantIconSelection}`}
             src={imageUrl}
             alt={alt}
             width={80}

@@ -1,14 +1,13 @@
-import React from 'react';
 import TableHeader from './TableHeader';
-import SelectedRow from './SelectedRow';
-import { Servant } from '../utils/constants';
+import Row from './Row';
+import { Servant } from '../../utils/constants';
 
 interface SelectedTableProps {
     selectedList: Servant[];
     target: Servant;
 }
 
-function SelectedTable({ selectedList, target }: SelectedTableProps) {
+function Table({ selectedList, target }: SelectedTableProps) {
     const checkGuess = (key: string, value: string | number) => {
         if (target[key] == value) {
             return true;
@@ -17,15 +16,18 @@ function SelectedTable({ selectedList, target }: SelectedTableProps) {
     };
 
     return (
-        <table>
+        <table className='w-full text-white text-shadow text-center text-lg'>
+            <colgroup>
+                <col width={83}/>
+            </colgroup>
             <TableHeader />
             <tbody>
                 {selectedList.map((servant) => (
-                    <SelectedRow key={servant.id} servant={servant} checkGuess={checkGuess} />
+                    <Row key={servant.id} servant={servant} checkGuess={checkGuess} />
                 ))}
             </tbody>
         </table>
     );
 }
 
-export default SelectedTable;
+export default Table;

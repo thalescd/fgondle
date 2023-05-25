@@ -53,7 +53,7 @@ export function filterServantInfo(fullData: any[]) {
             };
             filteredData.push(data);
         } catch (error) {
-            console.log(error);
+            console.error(`ERROR: Servant ${fullServant.name} cannot be loaded`);
             continue;
         }
     }

@@ -1,7 +1,4 @@
-import React from 'react';
-import styles from '../styles/index.module.css';
 import { Option } from '../utils/constants';
-import Image from 'next/image';
 import ServantImage from './ServantImage';
 
 interface SelectionOptionProps {
@@ -10,12 +7,12 @@ interface SelectionOptionProps {
 
 const SelectionOption = ({ option }: SelectionOptionProps) => {
   return (
-    <div className={`${styles.selection}`}>
+    <div className='flex items-center'>
       <ServantImage
         imageUrl={option.icon}
         alt={option.name}
       />
-      <span>{option.name}</span>
+      <span className='ml-4 text-2xl'>{option.name}</span>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-import React from 'react';
 import HeaderCell from './HeaderCell';
 
 function TableHeader() {

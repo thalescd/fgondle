@@ -1,6 +1,3 @@
-import React from 'react';
-import styles from '../styles/index.module.css';
-
 interface TurnCounterProps {
   turn: number;
   limitTurns: number;
@@ -8,7 +5,7 @@ interface TurnCounterProps {
 
 function TurnCounter({ turn, limitTurns }: TurnCounterProps) {
   return (
-    <h3 className={styles.turns}>Turn {turn}/{limitTurns}</h3>
+    <h3 className='text-center text-2xl my-4'>Turn {turn}/{limitTurns}</h3>
   );
 }
 
